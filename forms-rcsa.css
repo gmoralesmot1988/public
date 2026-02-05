@@ -321,3 +321,10 @@ th.inner {
 .lookupFormFieldBlock input::placeholder {
   color: #9aa4b2;
 }
+/* ===== RESET FINAL DEL WRAPPER ROOT ===== */
+[data-layout="true"] {
+  padding: 0 !important;
+  margin: 0 auto !important;
+  max-width: none !important; /* evita doble contención */
+  background-color: transparent !important;
+}
