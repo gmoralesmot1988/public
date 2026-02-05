@@ -328,3 +328,18 @@ th.inner {
   max-width: none !important; /* evita doble contención */
   background-color: transparent !important;
 }
+
+/* OVERRIDE DEFINITIVO del wrapper del proveedor */
+html body div[data-layout="true"][data-layout-version] {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  background: transparent !important;
+}
+
+/* Por si hay estilos en línea o un wrapper extra */
+html body div[data-layout="true"][data-layout-version] * {
+  /* NO afecta inputs porque tú ya los defines después/antes, pero evita “aire” raro */
+  box-sizing: border-box;
+}
+
