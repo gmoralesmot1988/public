@@ -1,0 +1,323 @@
+/* Contenedor general del form */
+table {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Columna principal: TOP = 0 (como quieres). 
+   Si quieres algo de aire lateral, ajusta --side-pad */
+th.inner {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 0 !important;
+  /* 👈 TOP 0 */
+  --side-pad: 0px;
+  /* 👈 cámbialo a 12px/16px si quieres */
+  padding-left: var(--side-pad) !important;
+  padding-right: var(--side-pad) !important;
+  padding-bottom: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Espaciado vertical más compacto entre campos */
+.textFormFieldBlock,
+.optionSetFormFieldBlock,
+.lookupFormFieldBlock {
+  width: 100%;
+  margin: 0 0 10px 0;
+  /* 👈 compacto */
+}
+
+/* Labels: compactos */
+.textFormFieldBlock label,
+.optionSetFormFieldBlock label,
+.lookupFormFieldBlock label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  color: #111;
+}
+
+/* Inputs modernos (fondo suave + borde sutil) */
+.textFormFieldBlock input,
+.optionSetFormFieldBlock select,
+.lookupFormFieldBlock input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 12px;
+  border: 1px solid #e4e7ec;
+  background: #f6f7fb;
+  /* 👈 suave */
+  color: #111;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover: un pelín más blanco */
+.textFormFieldBlock input:hover,
+.optionSetFormFieldBlock select:hover,
+.lookupFormFieldBlock input:hover {
+  background: #ffffff;
+}
+
+/* Focus premium */
+.textFormFieldBlock input:focus,
+.optionSetFormFieldBlock select:focus,
+.lookupFormFieldBlock input:focus {
+  outline: none;
+  border-color: #6b5cff;
+  box-shadow: 0 0 0 4px rgba(107, 92, 255, 0.14);
+  background: #fff;
+}
+
+/* Placeholder */
+input::placeholder {
+  color: #98a2b3;
+}
+
+/* Select: flechita, sin afectar color del botón */
+optionSetFormFieldBlock select,
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23667085' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 10px;
+}
+
+/* Aviso de privacidad: quitar espacio exagerado */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0 10px 0 0 !important;
+  vertical-align: middle;
+}
+
+/* Trata de agarrar el bloque del checkbox (varía por proveedor) */
+.booleanFormFieldBlock,
+.checkboxFormFieldBlock,
+.consentFormFieldBlock,
+.privacyFormFieldBlock {
+  margin: 6px 0 10px 0 !important;
+  /* 👈 reduce huecos */
+  padding: 0 !important;
+}
+
+/* Si el enlace “Aviso de Privacidad” viene dentro de un label */
+.booleanFormFieldBlock label,
+.checkboxFormFieldBlock label,
+.consentFormFieldBlock label,
+.privacyFormFieldBlock label {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline !important;
+  font-weight: 500;
+}
+
+/* Botón: 100% ancho sin tocar colores (importante) */
+button,
+input[type="submit"],
+input[type="button"] {
+  width: 100% !important;
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  th.inner {
+    --side-pad: 0px;
+    /* o 12px si quieres margen en móvil */
+  }
+
+  .textFormFieldBlock,
+  .optionSetFormFieldBlock,
+  .lookupFormFieldBlock {
+    margin-bottom: 8px;
+  }
+}
+
+/* Mata el padding y (sobre todo) el GAP interno que separa label/input */
+.textFormFieldBlock,
+.dateTimeFormFieldBlock,
+.twoOptionFormFieldBlock,
+.optionSetFormFieldBlock,
+.multiOptionSetFormFieldBlock,
+.lookupFormFieldBlock {
+  padding: 0 !important;
+  gap: 3px !important;
+  /* 👈 pon 0 si lo quieres pegado */
+  margin-bottom: 8px !important;
+  /* 👈 separación ENTRE campos */
+}
+
+/* Por si el proveedor mete márgenes en label/input */
+.textFormFieldBlock label,
+.dateTimeFormFieldBlock label,
+.twoOptionFormFieldBlock label,
+.optionSetFormFieldBlock label,
+.multiOptionSetFormFieldBlock label,
+.lookupFormFieldBlock label {
+  margin: 0 !important;
+}
+
+.textFormFieldBlock input,
+.dateTimeFormFieldBlock input,
+.twoOptionFormFieldBlock input,
+.optionSetFormFieldBlock select,
+.multiOptionSetFormFieldBlock select,
+.lookupFormFieldBlock input {
+  margin: 0 !important;
+}
+
+/* Si quieres aún más compacto */
+@media (max-width: 480px) {
+
+  .textFormFieldBlock,
+  .dateTimeFormFieldBlock,
+  .twoOptionFormFieldBlock,
+  .optionSetFormFieldBlock,
+  .multiOptionSetFormFieldBlock,
+  .lookupFormFieldBlock {
+    gap: 2px !important;
+    margin-bottom: 6px !important;
+  }
+}
+
+/* ====== AVISO DE PRIVACIDAD (CONSENT) ====== */
+
+/* Mata el padding + margin inline del bloque */
+.consentBlock {
+  padding: 0 !important;
+  margin-top: 6px !important;
+  /* pon 0 si lo quieres pegado */
+  margin-bottom: 10px !important;
+}
+
+/* Alinea checkbox y texto en una línea, sin espacios raros */
+.consentBlock>div {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+/* Checkbox consistente */
+.consentBlock input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+}
+
+/* Quita el padding/margins del label y del <p> interno */
+.consentBlock label {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.consentBlock label p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Link del aviso (opcional: estilo limpio) */
+.consentBlock a {
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+/* ====== BOTÓN ====== */
+
+/* 100% ancho SIN tocar color */
+.submitButtonWrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+button.submitButton {
+  width: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+/* Si el span mete padding raro */
+button.submitButton span {
+  display: inline-block;
+}
+
+/* ===== PULIDO FINAL DE PADDING (10px CONTROLADO) ===== */
+
+/* Th exterior que envuelve el form */
+.outer>tbody>tr>th {
+  padding: 0px !important;
+}
+
+/* Th interno real del contenido */
+th.inner {
+  padding: 0px !important;
+  /* 👈 el padding bueno */
+  box-sizing: border-box;
+}
+
+/* Evita que otros th hereden padding raro */
+.columnContainer,
+.columnContainer>table>tbody>tr>th {
+  padding: 0 !important;
+}
+
+/* ===== INPUTS MODERNOS TIPO STRIPE ===== */
+
+.textFormFieldBlock input,
+.optionSetFormFieldBlock select,
+.lookupFormFieldBlock input {
+  background: #f9fafb !important;
+  /* fondo suave */
+  border: 1px solid #e5e7eb !important;
+  /* borde casi invisible */
+  border-radius: 12px !important;
+
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.05),
+    /* sombra base */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  /* brillo interno */
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Hover: se siente más “vivo” */
+.textFormFieldBlock input:hover,
+.optionSetFormFieldBlock select:hover,
+.lookupFormFieldBlock input:hover {
+  background: #ffffff !important;
+  border-color: #d0d5dd !important;
+}
+
+/* ===== FOCUS NEUTRO (SIN MORADO) ===== */
+
+.textFormFieldBlock input:focus,
+.optionSetFormFieldBlock select:focus,
+.lookupFormFieldBlock input:focus {
+  background: #ffffff !important;
+  border-color: #cfd4dc !important;
+  /* gris neutro */
+
+  box-shadow:
+    0 0 0 1px rgba(16, 24, 40, 0.08),
+    /* halo mínimo */
+    0 1px 2px rgba(16, 24, 40, 0.06);
+  /* sombra base */
+
+  outline: none !important;
+}
+
+/* Placeholder más fino */
+.textFormFieldBlock input::placeholder,
+.lookupFormFieldBlock input::placeholder {
+  color: #9aa4b2;
+}
