@@ -1,0 +1,56 @@
+/* ===== Overlay ===== */
+.sk_modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: rgba(0, 0, 0, .55);
+
+  /* MUY IMPORTANTE: que no dependa de display */
+  display: block;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 320ms cubic-bezier(.22, 1, .36, 1),
+    visibility 0s linear 320ms;
+}
+
+/* Abierto (pisamos cualquier display:none inline de Webflow) */
+.sk_modal-overlay.is-open {
+  display: block !important;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    opacity 320ms cubic-bezier(.22, 1, .36, 1),
+    visibility 0s;
+}
+
+/* ===== Panel ===== */
+.sk_modal-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 560px);
+
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+
+  opacity: 0;
+  transform: translate(-50%, -46%) scale(.96);
+
+  transition:
+    opacity 320ms cubic-bezier(.22, 1, .36, 1),
+    transform 320ms cubic-bezier(.22, 1, .36, 1);
+  transition-delay: 80ms;
+}
+
+.sk_modal-overlay.is-open .sk_modal-wrapper {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
