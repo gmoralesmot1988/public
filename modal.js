@@ -14,6 +14,17 @@
     root.classList.add('is-open');
     root.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden';
+    
+    // Re-trigger Dynamics FormLoader para contenedores que ahora son visibles
+    if (typeof window.MsCrmMkt !== 'undefined' && window.MsCrmMkt.MsCrmFormLoader) {
+      setTimeout(() => {
+        try {
+          window.MsCrmMkt.MsCrmFormLoader.load();
+        } catch (err) {
+          console.warn('[Modal] FormLoader.load() error:', err);
+        }
+      }, 50);
+    }
   };
 
   const closeModal = (root) => {
