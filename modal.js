@@ -9,70 +9,30 @@
     return `#${v}`;
   };
 
-  // Solo bloquea requests de tracking puro de Dynamics
-  const isBlockableDynamicsRequest = (url) => {
-    if (!url || typeof url !== 'string') return false;
-    const isDynamicsDomain =
-      url.includes('svc.dynamics.com') || url.includes('.dynamics.com');
-    if (!isDynamicsDomain) return false;
-    return url.includes('trackwebsitevisited') || url.includes('/t/c/');
-  };
-
-  if (!window.__modalFetchIntercepted) {
-    window.__modalFetchIntercepted = true;
-    const _origFetch = window.fetch;
-    window.fetch = function (...args) {
-      const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
-      if (isBlockableDynamicsRequest(url)) {
-        console.debug('[Modal] Fetch bloqueado (tracking):', url);
-        return Promise.reject(new Error('Request bloqueado: tracking no permitido'));
-      }
-      return _origFetch.apply(this, args);
-    };
-  }
-
   const renderFormInModal = (root) => {
-    const placeholder = root.querySelector(
+    const p = root.querySelector(
       '[data-form-id][data-form-api-url][data-cached-form-url]'
     );
-    if (!placeholder) return;
+    if (!p) return;
 
-    const formId = placeholder.getAttribute('data-form-id');
-    const apiUrl = placeholder.getAttribute('data-form-api-url');
-    const cachedUrl = placeholder.getAttribute('data-cached-form-url');
+    p.innerHTML = '';
 
-    // Limpiar contenido previo
-    placeholder.innerHTML = '';
-
-    if (window.d365mktforms?.createForm) {
-      try {
-        console.debug('[Modal] Usando d365mktforms.createForm existente');
-        const el = window.d365mktforms.createForm(formId, apiUrl, cachedUrl);
-        if (el) placeholder.appendChild(el);
-      } catch (err) {
-        console.warn('[Modal] createForm error:', err);
-      }
+    if (!window.d365mktforms?.createForm) {
+      console.warn('[Modal] d365mktforms no disponible');
       return;
     }
 
-    // Fallback: esperar hasta 5s y reintentar
-    console.debug('[Modal] d365mktforms no disponible, esperando...');
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts++;
-      if (window.d365mktforms?.createForm) {
-        clearInterval(interval);
-        try {
-          const el = window.d365mktforms.createForm(formId, apiUrl, cachedUrl);
-          if (el) placeholder.appendChild(el);
-        } catch (err) {
-          console.warn('[Modal] createForm error (retry):', err);
-        }
-      } else if (attempts >= 100) {
-        clearInterval(interval);
-        console.warn('[Modal] d365mktforms no disponible tras 5s');
-      }
-    }, 50);
+    try {
+      const el = window.d365mktforms.createForm(
+        p.getAttribute('data-form-id'),
+        p.getAttribute('data-form-api-url'),
+        p.getAttribute('data-cached-form-url')
+      );
+      if (el) p.appendChild(el);
+      console.log('[Modal] Form montado correctamente');
+    } catch (err) {
+      console.warn('[Modal] createForm error:', err);
+    }
   };
 
   const openModal = (root) => {
@@ -92,11 +52,8 @@
     root.setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
 
-    // Limpiar el form al cerrar para que al re-abrir se monte fresco
-    const placeholder = root.querySelector(
-      '[data-form-id][data-form-api-url][data-cached-form-url]'
-    );
-    if (placeholder) placeholder.innerHTML = '';
+    const p = root.querySelector('[data-form-id][data-form-api-url][data-cached-form-url]');
+    if (p) p.innerHTML = '';
   };
 
   document.addEventListener('click', (e) => {
