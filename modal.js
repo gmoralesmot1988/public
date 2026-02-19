@@ -39,9 +39,7 @@
       document.head.appendChild(s);
     });
 
-  // ─── FIX 1: Interceptor de fetch selectivo ────────────────────────────────
-  // Solo bloquea requests de tracking puro; permite los de inicialización
-  // del FormLoader (domain handshake, caché del formulario, API calls).
+  // Solo bloquea requests de tracking puro; permite los de inicialización del FormLoader
   const isBlockableDynamicsRequest = (url) => {
     if (!url || typeof url !== 'string') return false;
 
@@ -51,20 +49,9 @@
 
     const isTrackingOnly =
       url.includes('trackwebsitevisited') || url.includes('/t/c/');
-    if (!isTrackingOnly) return false;
-
-    // Aunque tenga patrón de tracking, si es parte de la inicialización del
-    // formulario (api/, form, cachedform) lo dejamos pasar.
-    const isSafeInit =
-      url.includes('/api/') ||
-      url.includes('/form') ||
-      url.includes('cachedform') ||
-      url.includes('CachedForm');
-
-    return !isSafeInit;
+    return isTrackingOnly;
   };
 
-  // Aplicar interceptor solo si aún no existe uno previo
   if (!window.__modalFetchIntercepted) {
     window.__modalFetchIntercepted = true;
     const _origFetch = window.fetch;
@@ -77,7 +64,6 @@
       return _origFetch.apply(this, args);
     };
   }
-  // ─────────────────────────────────────────────────────────────────────────
 
   const ensureDynamicsLoader = async () => {
     if (window.d365mktforms?.createForm || window.MsCrmMkt?.MsCrmFormLoader?.load) return;
@@ -103,28 +89,6 @@
     throw lastErr || new Error('Dynamics loader not available');
   };
 
-  const fixApiUrlIfNeeded = (node) => {
-    const formId = node.getAttribute('data-form-id');
-    const apiUrl = node.getAttribute('data-form-api-url') || '';
-    if (!formId || !apiUrl) return;
-
-    const looksLikeBase = /\/landingpageforms\/?$/i.test(apiUrl);
-    if (looksLikeBase) {
-      const next = apiUrl.replace(
-        /\/landingpageforms\/?$/i,
-        `/landingpageforms/forms/${formId}`
-      );
-      node.setAttribute('data-form-api-url', next);
-      console.warn('[Modal][Dynamics] Ajusté data-form-api-url a:', next);
-    }
-  };
-
-  // ─── FIX 2: Reset de estado para re-aperturas limpias ────────────────────
-  // En la versión original, data-d365-rendered quedaba en "true" y el formulario
-  // no se volvía a montar si el modal se cerraba y re-abría.
-  // Ahora reseteamos ese flag al cerrar, y al abrir esperamos layout completo.
-  // ─────────────────────────────────────────────────────────────────────────
-
   const renderDynamicsFormsIn = async (root) => {
     if (!root) return;
 
@@ -138,8 +102,7 @@
     placeholders.forEach((node) => {
       if (node.dataset.d365Rendered === 'true') return;
 
-      fixApiUrlIfNeeded(node);
-
+      // Usar los atributos exactamente como vienen del HTML — no modificar
       const formId = node.getAttribute('data-form-id');
       const apiUrl = node.getAttribute('data-form-api-url');
       const cachedUrl = node.getAttribute('data-cached-form-url');
@@ -174,8 +137,6 @@
     root.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden';
 
-    // Espera a que el modal tenga layout real antes de inicializar Dynamics
-    // (evita que el loader calcule alto=0 y abandone la inicialización)
     requestAnimationFrame(() => {
       setTimeout(() => {
         renderDynamicsFormsIn(root).catch((e) => {
@@ -191,7 +152,7 @@
     root.setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
 
-    // FIX 2: Resetear flag para que al re-abrir el formulario se monte de nuevo
+    // Resetear flag para que al re-abrir el formulario se monte de nuevo
     root.querySelectorAll('[data-d365-rendered]').forEach((node) => {
       delete node.dataset.d365Rendered;
     });
