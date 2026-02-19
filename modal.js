@@ -3,9 +3,6 @@
   const ROOT = 'data-modal-root';
   const TARGET = 'data-modal-target';
 
-  const FORMLOADER_SRC =
-    'https://cxppusa1formui01cdnsa01-endpoint.azureedge.net/usa/FormLoader/FormLoader.bundle.js';
-
   const normalize = (v) => {
     if (!v) return null;
     if (v.startsWith('#') || v.startsWith('.')) return v;
@@ -34,23 +31,48 @@
     };
   }
 
-  const reloadFormLoader = () => {
-    // Limpiar estado previo del FormLoader para que re-escanee el DOM
-    try {
-      if (window.d365mktforms) delete window.d365mktforms;
-      if (window.MsCrmMkt) delete window.MsCrmMkt;
-    } catch (e) {}
+  const renderFormInModal = (root) => {
+    const placeholder = root.querySelector(
+      '[data-form-id][data-form-api-url][data-cached-form-url]'
+    );
+    if (!placeholder) return;
 
-    // Eliminar script anterior
-    const old = document.getElementById('d365-modal-loader');
-    if (old) old.remove();
+    const formId = placeholder.getAttribute('data-form-id');
+    const apiUrl = placeholder.getAttribute('data-form-api-url');
+    const cachedUrl = placeholder.getAttribute('data-cached-form-url');
 
-    // Reinyectar script — al cargarse escanea el DOM y encuentra el placeholder
-    const s = document.createElement('script');
-    s.id = 'd365-modal-loader';
-    s.src = FORMLOADER_SRC;
-    s.async = true;
-    document.head.appendChild(s);
+    // Limpiar contenido previo
+    placeholder.innerHTML = '';
+
+    if (window.d365mktforms?.createForm) {
+      try {
+        console.debug('[Modal] Usando d365mktforms.createForm existente');
+        const el = window.d365mktforms.createForm(formId, apiUrl, cachedUrl);
+        if (el) placeholder.appendChild(el);
+      } catch (err) {
+        console.warn('[Modal] createForm error:', err);
+      }
+      return;
+    }
+
+    // Fallback: esperar hasta 5s y reintentar
+    console.debug('[Modal] d365mktforms no disponible, esperando...');
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (window.d365mktforms?.createForm) {
+        clearInterval(interval);
+        try {
+          const el = window.d365mktforms.createForm(formId, apiUrl, cachedUrl);
+          if (el) placeholder.appendChild(el);
+        } catch (err) {
+          console.warn('[Modal] createForm error (retry):', err);
+        }
+      } else if (attempts >= 100) {
+        clearInterval(interval);
+        console.warn('[Modal] d365mktforms no disponible tras 5s');
+      }
+    }, 50);
   };
 
   const openModal = (root) => {
@@ -59,18 +81,8 @@
     root.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden';
 
-    // Esperar a que el modal sea visible en el DOM antes de cargar el form
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        const hasForm = root.querySelector(
-          '[data-form-id][data-form-api-url][data-cached-form-url]'
-        );
-        if (hasForm) {
-          // Limpiar contenido previo del placeholder para evitar duplicados
-          hasForm.innerHTML = '';
-          reloadFormLoader();
-        }
-      }, 100);
+      setTimeout(() => renderFormInModal(root), 100);
     });
   };
 
@@ -79,6 +91,12 @@
     root.classList.remove('is-open');
     root.setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
+
+    // Limpiar el form al cerrar para que al re-abrir se monte fresco
+    const placeholder = root.querySelector(
+      '[data-form-id][data-form-api-url][data-cached-form-url]'
+    );
+    if (placeholder) placeholder.innerHTML = '';
   };
 
   document.addEventListener('click', (e) => {
