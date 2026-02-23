@@ -1,330 +1,282 @@
-* Contenedor general del form */ table {
-	width: 100% !important;
-	height: auto !important;
+
+/* =================================================
+   FORM DYNAMICS – RESET + FULL WIDTH + UI TUNING
+   (Pegar al final del CSS)
+   ================================================= */
+
+/* =========================
+   A) EMPTY CONTAINER (quitar 600px y padding raro)
+   ========================= */
+.emptyContainer .outer {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: table !important;
 }
 
-/* Columna principal: TOP = 0 (como quieres). Si quieres algo de aire lateral, ajusta --side-pad */
-th.inner {
-	width: 100%;
-	max-width: 720px;
-	margin: 0 auto;
-	padding-top: 0 !important;
-	/* 👈 TOP 0 */
-	--side-pad: 0px;
-	/* 👈 cámbialo a 12px/16px si quieres */
-	padding-left: var(--side-pad) !important;
-	padding-right: var(--side-pad) !important;
-	padding-bottom: 0 !important;
-	box-sizing: border-box;
+.emptyContainer th,
+.emptyContainer td,
+.emptyContainer .inner {
+  padding: 0 !important;
 }
 
-/* Espaciado vertical más compacto entre campos */
-.textFormFieldBlock,
-.optionSetFormFieldBlock,
-.lookupFormFieldBlock {
-	width: 100%;
-	margin: 0 0 10px 0;
-	/* 👈 compacto */
+.emptyContainer table {
+  border-collapse: collapse !important;
+  width: 100% !important;
 }
 
-/* Labels: compactos */
-.textFormFieldBlock label,
-.optionSetFormFieldBlock label,
-.lookupFormFieldBlock label {
-	display: block;
-	font-size: 14px;
-	font-weight: 600;
-	margin: 0 0 5px 0;
-	color: #111;
+.emptyContainer .columnContainer {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 
-/* Inputs modernos (fondo suave + borde sutil) */
-.textFormFieldBlock input,
-.optionSetFormFieldBlock select,
-.lookupFormFieldBlock input {
-	width: 100%;
-	padding: 12px 14px;
-	font-size: 15px;
-	border-radius: 12px;
-	border: 1px solid #e4e7ec;
-	background: #f6f7fb;
-	/* 👈 suave */
-	color: #111;
-	box-sizing: border-box;
-	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+.emptyContainer input,
+.emptyContainer select,
+.emptyContainer textarea {
+  width: 100% !important;
+  box-sizing: border-box;
 }
 
-/* Hover: un pelín más blanco */
-.textFormFieldBlock input:hover,
-.optionSetFormFieldBlock select:hover,
-.lookupFormFieldBlock input:hover {
-	background: #ffffff;
+/* =========================
+   B) FULL WIDTH GLOBAL (mata inline 600/580)
+   ========================= */
+.marketingForm [data-layout="true"] {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
 }
 
-/* Focus premium */
-.textFormFieldBlock input:focus,
-.optionSetFormFieldBlock select:focus,
-.lookupFormFieldBlock input:focus {
-	outline: none;
-	border-color: #6b5cff;
-	box-shadow: 0 0 0 4px rgba(107, 92, 255, 0.14);
-	background: #fff;
+.marketingForm table.outer {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: table !important;
+  border-collapse: collapse !important;
 }
 
-/* Placeholder */
-input::placeholder {
-	color: #98a2b3;
+/* reset agresivo (incluye inline) */
+.marketingForm th,
+.marketingForm td {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-/* Select: flechita, sin afectar color del botón */
-optionSetFormFieldBlock select,
-select {
-	appearance: none;
-	background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23667085' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	background-position: right 14px center;
-	background-size: 10px;
+.marketingForm .inner {
+  padding: 0 !important;
 }
 
-/* Aviso de privacidad: quitar espacio exagerado */
-input[type="checkbox"] {
-	width: 18px;
-	height: 18px;
-	margin: 0 10px 0 0 !important;
-	vertical-align: middle;
+/* contenedores al 100% (incluye el th con width:580px inline) */
+.marketingForm .containerWrapper,
+.marketingForm .tbContainer,
+.marketingForm th.columnContainer,
+.marketingForm .columnContainer,
+.marketingForm table[width="100%"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 
-/* Trata de agarrar el bloque del checkbox (varía por proveedor) */
-.booleanFormFieldBlock,
-.checkboxFormFieldBlock,
-.consentFormFieldBlock,
-.privacyFormFieldBlock {
-	margin: 6px 0 10px 0 !important;
-	/* 👈 reduce huecos */
-	padding: 0 !important;
+/* campos al 100% */
+.marketingForm input,
+.marketingForm select,
+.marketingForm textarea {
+  width: 100% !important;
+  box-sizing: border-box;
 }
 
-/* Si el enlace “Aviso de Privacidad” viene dentro de un label */
-.booleanFormFieldBlock label,
-.checkboxFormFieldBlock label,
-.consentFormFieldBlock label,
-.privacyFormFieldBlock label {
-	margin: 0 !important;
-	padding: 0 !important;
-	display: inline !important;
-	font-weight: 500;
+/* =========================
+   C) ESPACIADO + ALTURA DE INPUTS
+   ========================= */
+
+/* bloque de campo: sin padding, pero con espacio vertical entre campos */
+.marketingForm .textFormFieldBlock,
+.marketingForm .dateTimeFormFieldBlock,
+.marketingForm .twoOptionFormFieldBlock,
+.marketingForm .optionSetFormFieldBlock,
+.marketingForm .multiOptionSetFormFieldBlock,
+.marketingForm .lookupFormFieldBlock {
+  padding: 0 !important;
+  margin: 0 0 14px 0 !important;
+  /* <-- espacio entre campos */
+  gap: 8px !important;
+  /* espacio entre label e input */
 }
 
-/* Botón: 100% ancho sin tocar colores (importante) */
-button,
-input[type="submit"],
-input[type="button"] {
-	width: 100% !important;
-	display: block;
+/* evita margen extra en el último campo del grupo */
+.marketingForm .textFormFieldBlock:last-child,
+.marketingForm .dateTimeFormFieldBlock:last-child,
+.marketingForm .twoOptionFormFieldBlock:last-child,
+.marketingForm .optionSetFormFieldBlock:last-child,
+.marketingForm .multiOptionSetFormFieldBlock:last-child,
+.marketingForm .lookupFormFieldBlock:last-child {
+  margin-bottom: 0 !important;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-	th.inner {
-		--side-pad: 0px;
-		/* o 12px si quieres margen en móvil */
-	}
-
-	.textFormFieldBlock,
-	.optionSetFormFieldBlock,
-	.lookupFormFieldBlock {
-		margin-bottom: 8px;
-	}
+/* inputs un poco más altos */
+.marketingForm .textFormFieldBlock input,
+.marketingForm .dateTimeFormFieldBlock input,
+.marketingForm .lookupFormFieldBlock input,
+.marketingForm .optionSetFormFieldBlock select {
+  padding: 14px 16px !important;
+  min-height: 52px !important;
+  font-size: 15px;
+  line-height: 1.2 !important;
 }
 
-/* Mata el padding y (sobre todo) el GAP interno que separa label/input */
-.textFormFieldBlock,
-.dateTimeFormFieldBlock,
-.twoOptionFormFieldBlock,
-.optionSetFormFieldBlock,
-.multiOptionSetFormFieldBlock,
-.lookupFormFieldBlock {
-	padding: 0 !important;
-	gap: 3px !important;
-	/* 👈 pon 0 si lo quieres pegado */
-	margin-bottom: 8px !important;
-	/* 👈 separación ENTRE campos */
+/* =========================
+   D) CONSENT / AVISO PRIVACIDAD (layout decente)
+   ========================= */
+.marketingForm .consentBlock {
+  padding: 0 !important;
+  /* mata padding inline 15px 4px */
+  margin-top: 14px !important;
 }
 
-/* Por si el proveedor mete márgenes en label/input */
-.textFormFieldBlock label,
-.dateTimeFormFieldBlock label,
-.twoOptionFormFieldBlock label,
-.optionSetFormFieldBlock label,
-.multiOptionSetFormFieldBlock label,
-.lookupFormFieldBlock label {
-	margin: 0 !important;
+.marketingForm .consentBlock>div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.textFormFieldBlock input,
-.dateTimeFormFieldBlock input,
-.twoOptionFormFieldBlock input,
-.optionSetFormFieldBlock select,
-.multiOptionSetFormFieldBlock select,
-.lookupFormFieldBlock input {
-	margin: 0 !important;
+.marketingForm .consentBlock input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  flex: 0 0 auto;
 }
 
-/* Si quieres aún más compacto */
-@media (max-width: 480px) {
-
-	.textFormFieldBlock,
-	.dateTimeFormFieldBlock,
-	.twoOptionFormFieldBlock,
-	.optionSetFormFieldBlock,
-	.multiOptionSetFormFieldBlock,
-	.lookupFormFieldBlock {
-		gap: 2px !important;
-		margin-bottom: 6px !important;
-	}
+.marketingForm .consentBlock label {
+  margin: 0 !important;
+  padding: 0 !important;
+  cursor: pointer;
 }
 
-/* ====== AVISO DE PRIVACIDAD (CONSENT) ====== */
-/* Mata el padding + margin inline del bloque */
-.consentBlock {
-	padding: 0 !important;
-	margin-top: 6px !important;
-	/* pon 0 si lo quieres pegado */
-	margin-bottom: 10px !important;
+.marketingForm .consentBlock label p {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline !important;
 }
 
-/* Alinea checkbox y texto en una línea, sin espacios raros */
-.consentBlock>div {
-	display: flex !important;
-	align-items: center !important;
-	gap: 10px !important;
+.marketingForm .consentBlock a {
+  text-decoration: underline;
 }
 
-/* Checkbox consistente */
-.consentBlock input[type="checkbox"] {
-	width: 18px !important;
-	height: 18px !important;
-	margin: 0 !important;
+/* =========================
+   E) BOTÓN (full width + color + hover)
+   ========================= */
+.marketingForm .submitButtonWrapper {
+  margin-top: 16px !important;
+  width: 100% !important;
+  text-align: center;
 }
 
-/* Quita el padding/margins del label y del <p> interno */
-.consentBlock label {
-	margin: 0 !important;
-	padding: 0 !important;
-	display: block !important;
+.marketingForm .submitButton {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+  background-color: #0056A3 !important;
+  /* <-- tu color */
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 16px 28px !important;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-.consentBlock label p {
-	margin: 0 !important;
-	padding: 0 !important;
+.marketingForm .submitButton:hover {
+  background-color: #003f78 !important;
 }
 
-/* Link del aviso (opcional: estilo limpio) */
-.consentBlock a {
-	text-decoration: underline;
-	font-size: 14px;
+.marketingForm .submitButton span {
+  color: inherit !important;
 }
 
-/* ====== BOTÓN ====== */
-/* 100% ancho SIN tocar color */
-.submitButtonWrapper {
-	margin: 0 !important;
-	padding: 0 !important;
+/* =================================================
+   FIX DEFINITIVO FORM DYNAMICS (estable)
+   ================================================= */
+
+/* ===== 1. FULL WIDTH REAL (sin romper layout) ===== */
+
+.marketingForm [data-layout="true"] {
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
-button.submitButton {
-	width: 100% !important;
-	display: block !important;
-	margin: 0 !important;
+.marketingForm table.outer {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: table !important;
 }
 
-/* Si el span mete padding raro */
-button.submitButton span {
-	display: inline-block;
+.marketingForm th.columnContainer {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
-/* ===== PULIDO FINAL DE PADDING (10px CONTROLADO) ===== */
-/* Th exterior que envuelve el form */
-.outer>tbody>tr>th {
-	padding: 0px !important;
+/* ===== 2. ESPACIO ENTRE CAMPOS (sin matar fondo) ===== */
+
+.marketingForm .textFormFieldBlock,
+.marketingForm .dateTimeFormFieldBlock,
+.marketingForm .lookupFormFieldBlock,
+.marketingForm .optionSetFormFieldBlock {
+  margin-bottom: 16px !important;
 }
 
-/* Th interno real del contenido */
-th.inner {
-	padding: 0px !important;
-	/* 👈 el padding bueno */
-	box-sizing: border-box;
+/* ===== 3. INPUTS BIEN DISEÑADOS ===== */
+
+.marketingForm .textFormFieldBlock input,
+.marketingForm .dateTimeFormFieldBlock input,
+.marketingForm .lookupFormFieldBlock input,
+.marketingForm .optionSetFormFieldBlock select {
+
+  width: 100% !important;
+  padding: 14px 16px !important;
+  min-height: 52px !important;
+
+  border: 1.5px solid #d6dbe1 !important;
+  /* borde suave */
+  border-radius: 10px !important;
+
+  background-color: #f9fbfd !important;
+  /* fondo suave */
+  box-sizing: border-box;
+
+  font-size: 15px;
+  transition: all .2s ease;
 }
 
-/* Evita que otros th hereden padding raro */
-.columnContainer,
-.columnContainer>table>tbody>tr>th {
-	padding: 0 !important;
+/* Focus elegante */
+.marketingForm input:focus,
+.marketingForm select:focus {
+  outline: none !important;
+  border-color: #0056A3 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(0, 86, 163, 0.08);
 }
 
-/* ===== INPUTS MODERNOS TIPO STRIPE ===== */
-.textFormFieldBlock input,
-.optionSetFormFieldBlock select,
-.lookupFormFieldBlock input {
-	background: #f9fafb !important;
-	/* fondo suave */
-	border: 1px solid #e5e7eb !important;
-	/* borde casi invisible */
-	border-radius: 12px !important;
-	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05),
-		/* sombra base */
-		inset 0 0 0 1px rgba(255, 255, 255, 0.6);
-	/* brillo interno */
-	transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+/* ===== 4. CONSENT LIMPIO ===== */
+
+.marketingForm .consentBlock {
+  margin-top: 12px !important;
 }
 
-/* Hover: se siente más “vivo” */
-.textFormFieldBlock input:hover,
-.optionSetFormFieldBlock select:hover,
-.lookupFormFieldBlock input:hover {
-	background: #ffffff !important;
-	border-color: #d0d5dd !important;
+/* ===== 5. BOTÓN FULL WIDTH ===== */
+
+.marketingForm .submitButton {
+  width: 100% !important;
+  display: block !important;
+  background-color: #0056A3 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 16px 20px !important;
+  font-weight: 700;
+  transition: background .2s ease;
 }
 
-/* ===== FOCUS NEUTRO (SIN MORADO) ===== */
-.textFormFieldBlock input:focus,
-.optionSetFormFieldBlock select:focus,
-.lookupFormFieldBlock input:focus {
-	background: #ffffff !important;
-	border-color: #cfd4dc !important;
-	/* gris neutro */
-	box-shadow: 0 0 0 1px rgba(16, 24, 40, 0.08),
-		/* halo mínimo */
-		0 1px 2px rgba(16, 24, 40, 0.06);
-	/* sombra base */
-	outline: none !important;
+.marketingForm .submitButton:hover {
+  background-color: #003f78 !important;
 }
 
-/* Placeholder más fino */
-.textFormFieldBlock input::placeholder,
-.lookupFormFieldBlock input::placeholder {
-	color: #9aa4b2;
-}
 
-/* ===== RESET FINAL DEL WRAPPER ROOT ===== */
-[data-layout="true"] {
-	padding: 0 !important;
-	margin: 0 auto !important;
-	max-width: none !important;
-	/* evita doble contención */
-	background-color: transparent !important;
-}
-
-/* OVERRIDE DEFINITIVO del wrapper del proveedor */
-html body div[data-layout="true"][data-layout-version] {
-	padding: 0 !important;
-	margin: 0 !important;
-	max-width: none !important;
-	background: transparent !important;
-}
-
-/* Por si hay estilos en línea o un wrapper extra */
-html body div[data-layout="true"][data-layout-version] * {
-	/* NO afecta inputs porque tú ya los defines después/antes, pero evita “aire” raro */
-	box-sizing: border-box;
-}
